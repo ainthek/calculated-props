@@ -15,6 +15,7 @@ describe("a=b/10; b=a*10", function() {
         });
         computed(o, "a", (b) => b / 10, at(o, "b"));
         computed(o, "b", (a) => a * 10, at(o, "a"));
+        //computed(o, "b", (a) => a * 10, at("rel:d", "e"));
         computed(o, "c", (a, b) => a + b, at(o, "a"), at(o, "b"));
 
         function changeA(value) {
@@ -27,7 +28,7 @@ describe("a=b/10; b=a*10", function() {
 
         assert(isNaN(o.a)); //already getter fails
         assert(isNaN(o.b));
-
+        
         changeA(5);
         assert.equal(o.a, 5);
         assert.equal(o.b, 50);
