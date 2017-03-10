@@ -11,3 +11,16 @@ use any framework, focuse on syntax beauty and cycles
 		b:(a)=>a*10,
 		//c:(a,b)=>a+b
 	}
+
+## Chalenge 2: nested tree, adressing other objects in tree
+
+	var o={
+		a:(b)=>b/10,
+		b:(a)=>a*10,
+		c:{
+			d:l(a,b,e)=>a+b,"../a","../b"),
+			e:10
+		}
+	}
+
+

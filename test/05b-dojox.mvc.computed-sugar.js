@@ -6,10 +6,15 @@ var computed = drequire("dojox/mvc/computed");
 var at = drequire("dojox/mvc/at");
 
 
-describe.only("a=b/10; b=a*10", function() {
+describe("a=b/10; b=a*10", function() {
 
     function sugar(plain) {
         var stateful = getStateful(plain);
+        // dynamically build this:
+        // computed(o, "a", (b) => b / 10, at(o, "b"));
+        // computed(o, "b", (a) => a * 10, at(o, "a"));
+        // computed(o, "c", (a, b) => a + b, at(o, "a"), at(o, "b"));
+
         for (let p in plain) {
             if (typeof plain[p] === "function") {
                 let funct = plain[p];
@@ -18,6 +23,7 @@ describe.only("a=b/10; b=a*10", function() {
             }
         }
         return stateful;
+
         function args(funct) {
             return require("parse-function")({})
                 .parse(funct).args;
@@ -25,10 +31,18 @@ describe.only("a=b/10; b=a*10", function() {
     }
 
     it("dojox/mvc/computed - syntactic sugar", function() {
+
         var o = sugar({
             a: (b) => b / 10,
             b: (a) => a * 10,
             c: (a, b) => a + b
+                // d: {
+                //     //a: (e.b) => e.b / 10
+                //     a: l((b) => b / 10, ()=>()=>o.e.b)
+                // },
+                // e: {
+                //     b: (d.a) => d.a * 10,
+                // }
         });
 
         function changeA(value) {
